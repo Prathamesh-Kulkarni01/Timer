@@ -21,7 +21,7 @@ export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
 
   useEffect(() => {
     let intervalId: number | null;
-    if (timer.remainingTime < 0 && !hasEndedRef.current) {
+    if (timer.remainingTime <= 0 && !hasEndedRef.current) {
       hasEndedRef.current = true;
       timerAudio.play();
       intervalId = setInterval(() => {

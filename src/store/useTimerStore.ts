@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import { Timer } from '../types/timer';
@@ -27,10 +28,13 @@ const timerSlice = createSlice({
       }
     },
     updateTimer: (state, action) => {
-      const timer = state.timers.find(timer => timer.id === action.payload);
+      const timer = state.timers.find((timer) => timer.id === action.payload);
       if (timer && timer.isRunning) {
-        timer.remainingTime -= 1;
-        timer.isRunning = timer.remainingTime > 0;
+        if (timer.remainingTime > 0) {
+          timer.remainingTime -= 1;
+        } else {
+          timer.isRunning = false;
+        }
       }
     },
     restartTimer: (state, action) => {
@@ -69,13 +73,23 @@ export const {
 export const useTimerStore = () => {
   const dispatch = useDispatch();
   const timers = useSelector((state: { timers: Timer[] }) => state.timers);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      timers.forEach((timer) => {
+        if (timer.isRunning) {
+          dispatch(updateTimer(timer.id));
+        }
+      });
+    }, 1000);
+    
+    return () => clearInterval(interval);
+  }, [dispatch, timers]);
 
   return {
     timers,
     addTimer: (timer: Omit<Timer, 'id' | 'createdAt'>) => dispatch(addTimer(timer)),
     deleteTimer: (id: string) => dispatch(deleteTimer(id)),
     toggleTimer: (id: string) => dispatch(toggleTimer(id)),
-    updateTimer: (id: string) => dispatch(updateTimer(id)),
     restartTimer: (id: string) => dispatch(restartTimer(id)),
     editTimer: (id: string, updates: Partial<Timer>) => dispatch(editTimer({ id, updates })),
   };

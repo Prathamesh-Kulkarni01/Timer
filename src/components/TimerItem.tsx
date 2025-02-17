@@ -14,26 +14,47 @@ interface TimerItemProps {
 }
 
 export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
-  const { toggleTimer, deleteTimer, updateTimer, restartTimer } =
+  const { toggleTimer, deleteTimer, restartTimer } =
     useTimerStore();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const intervalRef = useRef<number | null>(null);
   const hasEndedRef = useRef(false);
   const timerAudio = TimerAudio.getInstance();
-  const remainingTimeRef = useRef(timer.remainingTime); // Track remaining time separately
 
 
 useEffect(() => {
-  if (timer.remainingTime <= 0) {
-    timerAudio.play().catch(console.error);
+  let intervalId:any;
+  if (timer.remainingTime < 0 && !hasEndedRef.current) {
+    hasEndedRef.current = true;
+    timerAudio.play();
+    intervalId = setInterval(() => {
+      timerAudio.play().catch(console.error);
+    }, 1000); 
+
     toast.success(`Timer "${timer.title}" has ended!`, {
       duration: 5000,
+      onAutoClose: () => {
+        if (intervalId) {
+          clearInterval(intervalId);
+        }
+      },
       action: {
-        label: "Dismiss",
-        onClick: stop, 
+        label: 'Dismiss',
+        onClick: () => {
+          if (intervalId) {
+            clearInterval(intervalId);
+          }
+          timerAudio.stop();
+          hasEndedRef.current = false;
+        },
       },
     });
   }
+
+  return () => {
+    if (intervalId) {
+      clearInterval(intervalId);
+    }
+  };
 }, [timer.remainingTime, timer.title, timerAudio]); 
 
 

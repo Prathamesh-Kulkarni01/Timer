@@ -14,49 +14,46 @@ interface TimerItemProps {
 }
 
 export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
-  const { toggleTimer, deleteTimer, restartTimer } =
-    useTimerStore();
+  const { toggleTimer, deleteTimer, restartTimer } = useTimerStore();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const hasEndedRef = useRef(false);
   const timerAudio = TimerAudio.getInstance();
 
+  useEffect(() => {
+    let intervalId: number | null;
+    if (timer.remainingTime < 0 && !hasEndedRef.current) {
+      hasEndedRef.current = true;
+      timerAudio.play();
+      intervalId = setInterval(() => {
+        timerAudio.play().catch(console.error);
+      }, 1000);
 
-useEffect(() => {
-  let intervalId:any;
-  if (timer.remainingTime < 0 && !hasEndedRef.current) {
-    hasEndedRef.current = true;
-    timerAudio.play();
-    intervalId = setInterval(() => {
-      timerAudio.play().catch(console.error);
-    }, 1000); 
-
-    toast.success(`Timer "${timer.title}" has ended!`, {
-      duration: 5000,
-      onAutoClose: () => {
-        if (intervalId) {
-          clearInterval(intervalId);
-        }
-      },
-      action: {
-        label: 'Dismiss',
-        onClick: () => {
+      toast.success(`Timer "${timer.title}" has ended!`, {
+        duration: 5000,
+        onAutoClose: () => {
           if (intervalId) {
             clearInterval(intervalId);
           }
-          timerAudio.stop();
-          hasEndedRef.current = false;
         },
-      },
-    });
-  }
-
-  return () => {
-    if (intervalId) {
-      clearInterval(intervalId);
+        action: {
+          label: "Dismiss",
+          onClick: () => {
+            if (intervalId) {
+              clearInterval(intervalId);
+            }
+            timerAudio.stop();
+            hasEndedRef.current = false;
+          },
+        },
+      });
     }
-  };
-}, [timer.remainingTime, timer.title, timerAudio]); 
 
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [timer.remainingTime, timer.title, timerAudio]);
 
   const handleRestart = () => {
     hasEndedRef.current = false;
@@ -79,8 +76,18 @@ useEffect(() => {
     <>
       <div className="relative bg-white rounded-xl shadow-lg p-6 transition-transform hover:scale-102 overflow-hidden">
         <div className="absolute inset-0 w-full h-full -z-10 opacity-5">
-          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="50" r="45" stroke="currentColor" strokeWidth="2" />
+          <svg
+            viewBox="0 0 100 100"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              r="45"
+              stroke="currentColor"
+              strokeWidth="2"
+            />
             <path
               d="M50 20V50L70 70"
               stroke="currentColor"
@@ -93,7 +100,9 @@ useEffect(() => {
         <div className="relative">
           <div className="flex justify-between items-start mb-4">
             <div>
-              <h3 className="text-xl font-semibold text-gray-800">{timer.title}</h3>
+              <h3 className="text-xl font-semibold text-gray-800">
+                {timer.title}
+              </h3>
               <p className="text-gray-600 mt-1">{timer.description}</p>
             </div>
             <div className="flex gap-2">

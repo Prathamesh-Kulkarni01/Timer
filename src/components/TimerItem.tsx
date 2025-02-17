@@ -18,6 +18,7 @@ export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const hasEndedRef = useRef(false);
   const timerAudio = TimerAudio.getInstance();
+  const isMobile = window.innerWidth <= 768;
 
   useEffect(() => {
     let intervalId: number | null;
@@ -30,6 +31,7 @@ export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
 
       toast.success(`Timer "${timer.title}" has ended!`, {
         duration: 5000,
+        position: isMobile ? 'bottom-center' : 'top-right',
         onAutoClose: () => {
           if (intervalId) {
             clearInterval(intervalId);
@@ -53,7 +55,7 @@ export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
         clearInterval(intervalId);
       }
     };
-  }, [timer.remainingTime, timer.title, timerAudio]);
+  }, [timer.remainingTime, timer.title, timerAudio, isMobile]);
 
   const handleRestart = () => {
     hasEndedRef.current = false;

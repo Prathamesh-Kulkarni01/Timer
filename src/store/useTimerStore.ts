@@ -3,13 +3,20 @@ import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import { Timer } from '../types/timer';
 
-const initialState = {
-  timers: [] as Timer[],
+const loadTimersFromLocalStorage = (): Timer[] => {
+  const timers = localStorage.getItem('timers');
+  return timers ? JSON.parse(timers) : [];
+};
+
+const saveTimersToLocalStorage = (timers: Timer[]) => {
+  localStorage.setItem('timers', JSON.stringify(timers));
 };
 
 const timerSlice = createSlice({
   name: 'timer',
-  initialState,
+  initialState: {
+    timers: loadTimersFromLocalStorage(),
+  },
   reducers: {
     addTimer: (state, action) => {
       state.timers.push({
@@ -17,14 +24,17 @@ const timerSlice = createSlice({
         id: crypto.randomUUID(),
         createdAt: Date.now(),
       });
+      saveTimersToLocalStorage(state.timers);
     },
     deleteTimer: (state, action) => {
       state.timers = state.timers.filter(timer => timer.id !== action.payload);
+      saveTimersToLocalStorage(state.timers);
     },
     toggleTimer: (state, action) => {
       const timer = state.timers.find(timer => timer.id === action.payload);
       if (timer) {
         timer.isRunning = !timer.isRunning;
+        saveTimersToLocalStorage(state.timers);
       }
     },
     updateTimer: (state, action) => {
@@ -35,6 +45,7 @@ const timerSlice = createSlice({
         } else {
           timer.isRunning = false;
         }
+        saveTimersToLocalStorage(state.timers);
       }
     },
     restartTimer: (state, action) => {
@@ -42,6 +53,7 @@ const timerSlice = createSlice({
       if (timer) {
         timer.remainingTime = timer.duration;
         timer.isRunning = false;
+        saveTimersToLocalStorage(state.timers);
       }
     },
     editTimer: (state, action) => {
@@ -50,6 +62,7 @@ const timerSlice = createSlice({
         Object.assign(timer, action.payload.updates);
         timer.remainingTime = action.payload.updates.duration || timer.duration;
         timer.isRunning = false;
+        saveTimersToLocalStorage(state.timers);
       }
     },
   },

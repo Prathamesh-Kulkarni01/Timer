@@ -1,144 +1,68 @@
-# Timer App Assignment
+# Timer Application
 
-Welcome to the Timer App Assignment! This project is designed to evaluate your skills in React development, focusing on **UI implementation**, **code quality**, **state management**, and **best practices**. The project uses **React**, **Vite**, **Tailwind CSS**, and **Vitest** for testing.
+This Timer Application is built with React and Zustand for state management. It allows users to create, edit, delete, and manage multiple timers. The application includes features like audio notifications when a timer ends and persistent storage using localStorage to save timers across page refreshes.
 
----
+## Features
 
-## **Objective**
-Your task is to improve and enhance an existing Timer App based on the following requirements. The app currently has a partially implemented timer system, and your goal is to address the listed issues and extend its functionality.
+- **Create, Edit, and Delete Timers**: Easily manage multiple timers with intuitive controls.
+- **Start, Pause, and Restart Timers**: Control the timers with start, pause, and restart functionalities.
+- **Audio Notifications**: Receive audio alerts when a timer ends.
+- **Persistent Storage**: Timers are saved in localStorage, ensuring they persist across page refreshes.
+- **Responsive Design**: Snack bars are displayed in the top-right corner for desktop devices and at the bottom of the screen for mobile devices.
 
----
+## Getting Started
 
-## **Tech Stack**
-- **Frontend Framework**: React (with Vite for fast development)
-- **Styling**: Tailwind CSS
-- **Testing Framework**: Vitest (for unit and component testing)
+### Prerequisites
 
----
+- Node.js (>= 14.x)
+- pnpm
 
-## **Steps to Complete**
+### Installation
 
-1. **Fork or Clone the Repository**
-   - Fork or clone the repository to your local machine.
-   - Set up the project using the provided instructions.
+1. Clone the repository:
 
-2. **Complete the Following Tasks:**
-
-   1. **Match the UI:**
-      - Ensure the app's UI matches the given **screenshots**.
-      - <img width="250" alt="Screenshot 2024-12-03 at 8 30 53 PM" src="https://github.com/user-attachments/assets/59782304-c254-4d87-9fac-7f92c15bbc6f">
-      - <img width="250" alt="Screenshot 2024-12-03 at 3 29 25 PM" src="https://github.com/user-attachments/assets/9bb429ff-cd78-4411-b222-9d947c3ae79b">
-      - <img width="250" alt="Screenshot 2024-12-03 at 8 21 04 PM" src="https://github.com/user-attachments/assets/a26e8ec7-7e00-4964-8f61-651945f4bbd1">
-      - <img width="250" alt="Screenshot 2024-12-03 at 8 21 30 PM" src="https://github.com/user-attachments/assets/a513a462-540f-45e7-8ac0-0890995ec82d">
-
-
-   2. **Simultaneous Timers:**
-      - Update the app to allow multiple timers to run simultaneously (currently, only one timer runs at a time).
-
-   3. **Snack Bar Behavior:**
-      - When a timer is completed:
-        - A snack bar notification should display.
-        - The notification sound should keep playing until the snack bar is dismissed.
-
-   4. **Fix Snack Bar Console Error:**
-      - Resolve the **console error** that occurs when the snack bar's **dismiss button** is clicked.
-
-   5. **Extract Common Components:**
-      - Extract the buttons in the **Add/Edit Timer Modal** as a **separate reusable component**.
-      - Replace all instances of similar buttons in the app with this component.
-
-   6. **Consolidate Modal Code:**
-      - Refactor the code to use a **single modal component** for both adding and editing timers, eliminating duplication.
-
-   7. **Validation Snack Bars:**
-      - Currently, the **Submit button** is disabled when the form is invalid.
-      - Show an **error snack bar** or notification when the form is submitted with invalid data.
-
-   8. **Responsive Snack Bar Placement:**
-      - For **desktop devices**: Display snack bars in the **top-right corner**.
-      - For **mobile devices**: Display snack bars at the **bottom of the screen**.
-
-   9. **Write Tests:**
-      - Add **unit tests** for the `validation.ts` file to ensure all validation rules work as expected.
-      - Write **component tests** for reusable components like `TimerItem` and `ModalButtons`.
-
-   10. **Timer Persistence:**
-       - Use **localStorage** to persist timers across page refreshes.
-
----
-
-## **Project Setup**
-
-1. Clone the repository:  
-   ```bash
-   git clone https://github.com/CW-Codewalnut/timer.git
+   ```sh
+   git clone https://github.com/Prathamesh-Kulkarni01/Timer.git
+   cd timer-app
    ```
 
-2. Install dependencies:  
-   ```bash
-   npm install
+2. Install dependencies:
+
+   ```sh
+   pnpm install
    ```
 
-3. Start the development server:  
-   ```bash
-   npm run dev
-   ```
+### Running the Application
 
-4. Run tests:  
-   ```bash
-   npm vitest
-   ```
+To start the development server, run:
 
----
+```sh
+pnpm start
+```
 
-## **Evaluation Criteria**
+The application will be available at `http://localhost:3000`.
 
-You will be evaluated on the following points:
+### Building for Production
 
-1. **UI Matching:**
-   - The app's UI should match the provided screenshots.
+To create a production build, run:
 
-2. **Code Quality:**
-   - Clean, modular, and readable code.
-   - Avoid code duplication and ensure reusable components are implemented.
+```sh
+pnpm build
+```
 
-3. **Functionality:**
-   - Simultaneous timers, snack bar notifications, and localStorage persistence should work seamlessly.
+The production build will be available in the `build` directory.
 
-4. **State Management:**
-   - Effective use of React hooks or Context API for managing state.
+## Project Structure
 
-5. **Testing:**
-   - Comprehensive unit and component tests, especially for validation logic and reusable components.
+- `src/components`: Contains React components
+- `src/store`: Contains Zustand store for state management
+- `src/utils`: Contains utility functions and classes
+- `src/types`: Contains TypeScript type definitions
 
-6. **Error Handling:**
-   - Resolve the existing snack bar console error and provide meaningful feedback to users for invalid forms.
+## Contributing
 
-7. **Responsiveness:**
-   - Snack bar placement should adapt based on device type (desktop vs. mobile).
+Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
 
-8. **Commit Messages:**
-   - Follow **conventional commit standards** (e.g., `feat:`, `fix:`, `refactor:`).
+## License
 
----
-
-## **Deliverables**
-
-1. A **GitHub repository link** to your completed project (forked from the original repo).  
-2. Include a `README.md` describing:  
-   - Steps to run your project.  
-   - Any additional changes or enhancements you made.  
-
----
-
-## **Time Constraint**
-
-You are expected to complete this assignment in **4 hours** of focused effort.  
-
----
-
-## **Contact**
-
-If you have any questions or issues, feel free to reach out via the provided contact channels in the repository.
-
-Good luck! 🚀
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
